@@ -57,30 +57,30 @@ const controllers = {
             res.status(400).json(({ msg: "Hubo un problema al eliminar la información " }))
         }
     },
-    viewBrand : async (req,res)=>{
+    viewBrand: async (req, res) => {
         const brand = req.params.brand;
-        Printer.find({brand: brand}, function(error, printerBD){
-            if(error){
-                return res.json({msg:'No hay impresoras de esa marca', error})
+        Printer.find({ brand: brand }, function (error, printerBD) {
+            if (error) {
+                return res.json({ msg: 'No hay impresoras de esa marca', error })
             } else {
-                return res.json({succes: true, printer: printerBD});
+                return res.json({ succes: true, printer: printerBD });
             }
         })
     },
-    viewType : async (req,res)=>{
+    viewType: async (req, res) => {
         const type = req.params.type;
-        Printer.find({type: type}, function(error, printerBD){
-            if(error){
-                return res.json({msg:'No se encontro ese tipo de impresora', error})
+        Printer.find({ type: type }, function (error, printerBD) {
+            if (error) {
+                return res.json({ msg: 'No se encontro ese tipo de impresora', error })
             } else {
-                return res.json({succes: true, printer: printerBD});
+                return res.json({ succes: true, printer: printerBD });
             }
         })
     },
 }
 const axiosReq = async (req, res) => {
     try {
-        const response = await axios.get('https://pokeapi.co/api/v2/ability', { timeout: 10000 })
+        const response = await axios.get('https://pokeapi.co/api/v2/pokemon/?limit=150', { timeout: 10000 })
         res.json({ status: response.status, data: response.data })
     } catch (error) {
         res.json({ status: error.response.status, data: error.response.data })
