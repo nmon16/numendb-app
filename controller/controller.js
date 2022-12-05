@@ -1,6 +1,7 @@
+const res = require('express/lib/response')
 const { Printer } = require("../models/printers");
 const { validationResult } = require("express-validator")
-const { axios } = require('axios')
+const axios = require('axios')
 
 const controllers = {
 
@@ -11,8 +12,7 @@ const controllers = {
         try {
             const error = validationResult(req)
             if (error.isEmpty()) {
-                const { brand } = req.body
-                const printer = new Printer({ brand });
+                const printer = new Printer(req.body);
                 await printer.save()
                 res.status(201).json({ printer, msg: "Impresora añadida correctamente:" })
             } else {
@@ -20,11 +20,11 @@ const controllers = {
             }
         }
         catch (err) {
-            res.status(501).json({ msg: "No se puede guardar la impresora en la base de datos" }, err)
+            res.status(501).json({ msg: "No se puede crear la impresora en la base de datos" }, err)
         }
     },
     viewPrinter: async (req, res) => {
-        const printers = await Printer.find();
+        const printers = await Printer.find()
         res.json({ printers })
     },
     viewOnePrinter: async (req, res) => {
@@ -54,14 +54,14 @@ const controllers = {
             const printer = await Printer.findByIdAndDelete(req.params.id)
             res.json({ msg: "Impresora eliminada:", printer })
         } catch (error) {
-            res.status(400).json(({ msg: "Hubo un problema al eliminar la información " }))
+            res.status(400).json(({ msg: "Hubo un problema al eliminar la impresora " }))
         }
     },
     viewBrand: async (req, res) => {
         const brand = req.params.brand;
-        Printer.find({ brand: brand }, function (error, printerBD) {
-            if (error) {
-                return res.json({ msg: 'No hay impresoras de esa marca', error })
+        Printer.find({ brand: brand }, function (err, printerBD) {
+            if (err) {
+                return res.json({ msg: 'No hay impresoras de esa marca', err })
             } else {
                 return res.json({ succes: true, printer: printerBD });
             }
@@ -69,24 +69,23 @@ const controllers = {
     },
     viewType: async (req, res) => {
         const type = req.params.type;
-        Printer.find({ type: type }, function (error, printerBD) {
-            if (error) {
-                return res.json({ msg: 'No se encontro ese tipo de impresora', error })
+        Printer.find({ type: type }, function (err, printerBD) {
+            if (err) {
+                return res.json({ msg: 'No se encontro ese tipo de impresora', err })
             } else {
                 return res.json({ succes: true, printer: printerBD });
             }
         })
     },
 }
-const axiosReq = async (req, res) => {
+const getPokemon = async(req,res)=>{
     try {
-        const response = await axios.get('https://pokeapi.co/api/v2/pokemon/?limit=150', { timeout: 10000 })
-        res.json({ status: response.status, data: response.data })
+        const respuesta = await axios.get("https://pokeapi.co/api/v2/pokemon/ditto" ,{timeout:10000})
+        res.json({status: respuesta.status, data: respuesta.data})
     } catch (error) {
-        res.json({ status: error.response.status, data: error.response.data })
+        res.json({status: error.response.status, data: error.response.status })
     }
-
 }
 
 
-module.exports = { controllers, axiosReq }
+module.exports = { controllers, getPokemon }

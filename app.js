@@ -19,8 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/printers', printersRouter);
-app.use('/pokemon', pokemonRouter);
-
+app.use('/pokemon', pokemonRouter)
 dbConnection();
 
 module.exports = app;

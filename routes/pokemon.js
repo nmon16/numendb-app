@@ -1,7 +1,8 @@
 const express = require('express');
-const router= express.Router();
-const {axiosReq} = require('../controllers/controller');
+const { getPokemon } = require('../controller/controller');
+const router = express.Router();
 
-router.get('/', axiosReq);
+/* GET home page. */
+router.get('/', getPokemon );
 
 module.exports = router;
